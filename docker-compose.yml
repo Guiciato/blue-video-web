@@ -1,0 +1,20 @@
+services:
+  blue-video-web:
+    build: .
+    container_name: blue-video-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      MAX_CONCURRENT_JOBS: 1
+      MAX_PLAYLIST_ITEMS: 30
+      MAX_UPLOAD_FILES: 10
+      MAX_UPLOAD_MB_PER_FILE: 500
+      JOB_TTL_MINUTES: 60
+    volumes:
+      - blue_video_data:/app/data
+
+volumes:
+  blue_video_data:

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="description" content="Baixe vídeos autorizados e converta arquivos MP4 para MP3 diretamente no navegador." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="icon" href="/assets/icon-192.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Blue Video Web</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-logo" src="/assets/logo.png" alt="Logo Blue Video Web" />
+          <div>
+            <h1>Blue Video Web</h1>
+            <p>Downloads autorizados e conversão MP4 → MP3</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span id="serverStatus" class="status-chip checking">Servidor: verificando</span>
+          <button id="installButton" class="button ghost small hidden" type="button">Instalar app</button>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Ferramentas">
+        <button class="tab-button active" type="button" data-tab="downloadPanel">Baixar por link</button>
+        <button class="tab-button" type="button" data-tab="convertPanel">Converter arquivos</button>
+      </nav>
+
+      <main>
+        <section id="downloadPanel" class="panel active" aria-labelledby="downloadHeading">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">DOWNLOAD</span>
+              <h2 id="downloadHeading">Cole um link</h2>
+              <p>Escolha MP4 até 1080p ou extração de áudio em MP3.</p>
+            </div>
+            <span class="format-badge">Web · PWA</span>
+          </div>
+
+          <label class="field-label" for="videoUrl">Link do vídeo ou playlist</label>
+          <div class="url-box">
+            <textarea id="videoUrl" rows="3" spellcheck="false" placeholder="https://www.youtube.com/watch?v=..."></textarea>
+            <div class="inline-actions">
+              <button id="pasteButton" class="button secondary" type="button">Colar</button>
+              <button id="clearUrlButton" class="button ghost" type="button">Limpar</button>
+            </div>
+          </div>
+
+          <div class="format-grid" role="radiogroup" aria-label="Formato de saída">
+            <label class="format-option active">
+              <input type="radio" name="downloadFormat" value="mp4" checked />
+              <span class="format-icon">▶</span>
+              <span>
+                <strong>Vídeo MP4</strong>
+                <small>Qualidade máxima de até 1080p</small>
+              </span>
+            </label>
+            <label class="format-option">
+              <input type="radio" name="downloadFormat" value="mp3" />
+              <span class="format-icon">♫</span>
+              <span>
+                <strong>Áudio MP3</strong>
+                <small>Extração em alta qualidade</small>
+              </span>
+            </label>
+          </div>
+
+          <label class="checkbox-card">
+            <input id="playlistCheckbox" type="checkbox" />
+            <span class="checkmark" aria-hidden="true"></span>
+            <span>
+              <strong>Processar playlist</strong>
+              <small>O servidor limita a quantidade máxima de itens por segurança.</small>
+            </span>
+          </label>
+
+          <div class="primary-actions">
+            <button id="startDownloadButton" class="button primary large" type="button">Iniciar download</button>
+            <button id="cancelDownloadButton" class="button danger" type="button" disabled>Cancelar</button>
+            <a id="downloadResultButton" class="button secondary disabled" href="#" download>Baixar resultado</a>
+          </div>
+
+          <div class="progress-card" aria-live="polite">
+            <div class="progress-header">
+              <span id="downloadStatusText">Aguardando um link</span>
+              <strong id="downloadPercent">0%</strong>
+            </div>
+            <div class="progress-track"><div id="downloadProgressBar" class="progress-bar"></div></div>
+            <div class="progress-meta">
+              <span id="downloadSpeed">Velocidade: —</span>
+              <span id="downloadEta">Tempo restante: —</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="convertPanel" class="panel" aria-labelledby="convertHeading" hidden>
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">CONVERSOR</span>
+              <h2 id="convertHeading">Converta vários MP4 em MP3</h2>
+              <p>Os arquivos são enviados ao servidor, convertidos e apagados automaticamente após o prazo configurado.</p>
+            </div>
+            <span class="format-badge">MP4 → MP3</span>
+          </div>
+
+          <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Selecionar arquivos MP4">
+            <input id="mp4Files" type="file" accept="video/mp4,.mp4" multiple hidden />
+            <div class="drop-icon">＋</div>
+            <strong>Selecione ou arraste arquivos MP4</strong>
+            <span>Você pode escolher vários vídeos de uma vez.</span>
+            <button id="chooseFilesButton" class="button secondary" type="button">Escolher arquivos</button>
+          </div>
+
+          <div class="file-list-header">
+            <span id="selectedFilesCount">0 arquivos selecionados</span>
+            <button id="clearFilesButton" class="button ghost small" type="button">Limpar lista</button>
+          </div>
+          <ul id="selectedFilesList" class="file-list">
+            <li class="empty-state">Nenhum arquivo selecionado.</li>
+          </ul>
+
+          <div class="primary-actions">
+            <button id="startConvertButton" class="button primary large" type="button">Converter para MP3</button>
+            <button id="cancelConvertButton" class="button danger" type="button" disabled>Cancelar</button>
+            <a id="convertResultButton" class="button secondary disabled" href="#" download>Baixar resultado</a>
+          </div>
+
+          <div class="progress-card" aria-live="polite">
+            <div class="progress-header">
+              <span id="convertStatusText">Aguardando arquivos</span>
+              <strong id="convertPercent">0%</strong>
+            </div>
+            <div class="progress-track"><div id="convertProgressBar" class="progress-bar"></div></div>
+            <div class="progress-meta">
+              <span id="convertCurrentFile">Arquivo atual: —</span>
+              <span id="convertCounter">Lote: —</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-card" aria-labelledby="historyHeading">
+          <div class="history-header">
+            <div>
+              <span class="eyebrow">HISTÓRICO</span>
+              <h2 id="historyHeading">Atividade</h2>
+            </div>
+            <button id="clearLogButton" class="button ghost small" type="button">Limpar histórico</button>
+          </div>
+          <pre id="activityLog">Aplicação iniciada.</pre>
+        </section>
+      </main>
+
+      <footer>
+        Use somente conteúdo próprio, de domínio público ou que você tenha autorização para baixar. O sistema não contorna DRM, paywalls ou autenticação.
+      </footer>
+    </div>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
