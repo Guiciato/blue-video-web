@@ -1,8 +1,9 @@
-FROM node:24-bookworm-slim
+FROM node:22-bookworm-slim
 
 ENV NODE_ENV=production \
     PORT=3000 \
-    HOST=0.0.0.0
+    HOST=0.0.0.0 \
+    YTDLP_JS_RUNTIMES=node:/usr/local/bin/node
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates ffmpeg python3 python3-pip \
@@ -12,8 +13,9 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+# Copia somente o package.json para evitar usar um package-lock gerado em outro ambiente/registry.
+COPY package.json ./
+RUN npm install --omit=dev --no-audit --no-fund --registry=https://registry.npmjs.org/
 
 COPY . .
 RUN mkdir -p /app/data/jobs /app/data/uploads \

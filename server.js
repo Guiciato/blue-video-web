@@ -61,7 +61,7 @@ function commandVersion(command, args = ['--version']) {
     const timer = setTimeout(() => {
       child.kill();
       resolve(null);
-    }, 4000);
+    }, 12000);
     child.stdout.on('data', (chunk) => { output += chunk.toString(); });
     child.stderr.on('data', (chunk) => { output += chunk.toString(); });
     child.on('error', () => {

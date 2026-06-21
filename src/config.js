@@ -29,5 +29,6 @@ module.exports = Object.freeze({
   downloadRateLimitMax: positiveInteger(process.env.DOWNLOAD_RATE_LIMIT_MAX, 10),
   ytDlpBin: process.env.YT_DLP_BIN || 'yt-dlp',
   ffmpegBin: process.env.FFMPEG_BIN || 'ffmpeg',
-  ffprobeBin: process.env.FFPROBE_BIN || 'ffprobe'
+  ffprobeBin: process.env.FFPROBE_BIN || 'ffprobe',
+  ytDlpJsRuntimes: process.env.YTDLP_JS_RUNTIMES || ''
 });

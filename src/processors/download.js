@@ -104,6 +104,10 @@ function buildArgs({ url, playlist, format, outputDir, config }) {
     path.join(outputDir, '%(playlist_index&{} - |)s%(title).150B [%(id)s].%(ext)s')
   ];
 
+  if (config.ytDlpJsRuntimes) {
+    args.push('--js-runtimes', config.ytDlpJsRuntimes);
+  }
+
   if (format === 'mp3') {
     args.push(
       '--format',

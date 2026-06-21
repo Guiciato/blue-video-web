@@ -199,3 +199,11 @@ npm test
 ```
 
 O workflow em `.github/workflows/ci.yml` executa essas verificações automaticamente nos pushes e pull requests.
+
+## Correção v1.0.1 para deploy Docker
+
+Esta versão ajusta o `Dockerfile` para usar `node:22-bookworm-slim` e instalar as dependências diretamente pelo `package.json`, usando o registry público do npm. Isso evita falhas de build quando um `package-lock.json` foi gerado em outro ambiente.
+
+## Observação importante sobre YouTube em hospedagens públicas
+
+Em serviços como Render/Railway/Fly.io, alguns links do YouTube podem retornar `Sign in to confirm you're not a bot`. Isso acontece quando o YouTube não confia no IP do servidor. O projeto inclui runtime JavaScript para o yt-dlp, mas essa proteção do YouTube pode continuar acontecendo em servidores públicos. Para testes mais confiáveis com YouTube, rode localmente no seu PC ou em um servidor próprio com uso autorizado.

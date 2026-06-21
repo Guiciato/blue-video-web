@@ -1,12 +1,12 @@
 {
   "name": "blue-video-web",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "description": "Aplicação web para baixar vídeos autorizados e converter MP4 para MP3.",
   "main": "server.js",
   "type": "commonjs",
   "engines": {
-    "node": ">=22"
+    "node": ">=22 <25"
   },
   "scripts": {
     "start": "node server.js",
